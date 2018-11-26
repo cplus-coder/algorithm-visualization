@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-end;
+  position: relative;
+  width: 75%;
+  height: 75%;
+  margin-top: 15px;
+  border-radius: 4px;
+  background: #e6fffb;
+  box-shadow: 1px 1px 7px 0px rgba(0, 0, 0, 0.7);
+  & > .tower {
+    z-index: 2;
+    border-radius: 4px;
+    background: #876800;
+    box-shadow: 1px 1px 7px 0px rgba(0, 0, 0, 0.7);
+    & > .pillar {
+      z-index: 1;
+      position: absolute;
+      background: #876800;
+      box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.7);
+    }
+  }
+}
