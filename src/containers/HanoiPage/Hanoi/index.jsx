@@ -29,14 +29,16 @@ const renderPlate = (wrapper, data, state, towerNums, speed) => {
   plates = state === "enter" ? plates.enter().append('div') : state === "exit" ? plates.exit() : plates;
   plates
     .attr('class', styles.plate)
-    .style('width', plateData => `${plateMaxWidth - (plateMaxWidth - plateMinWidth) * (plateData.index / data.length)}px`)
+    .style('width', (_, index) => `${plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)}px`)
     .style('height', `${plateHeight}px`)
-    // .transition('transform')
-    // .duration(state === 'update' ? 500 : 0)
-    // .style('transform', plateData => `translateX(${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (plateData.index / data.length)) / 2}px)`)
-    .transition('transform')
+    .transition()
     .duration(state === 'update' ? 500 : 0)
-    .style('transform', plateData => `translate(${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (plateData.index / data.length)) / 2}px, ${towersPosY - plateData.depth * plateHeight - plateHeight}px)`)
+    .style('transform', (plateData, index) => `translate(${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)) / 2}px, ${towersPosY - plateData.depth * plateHeight - plateHeight}px)`)
+    // .duration(state === 'update' ? 250 : 0)
+    // .style('left', (plateData, index) => `${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)) / 2}px`)
+    // .transition()
+    // .duration(state === 'update' ? 250 : 0)
+    // .style('top', plateData => ` ${towersPosY - plateData.depth * plateHeight - plateHeight}px`)
 }
 
 const Hanoi = ({ towerNums, data }) => {
