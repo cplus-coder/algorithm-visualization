@@ -17,7 +17,7 @@ const renderTower = (towerNums) => {
 const renderPlate = (wrapper, data, state, towerNums, speed) => {
   const plateMaxWidth =  wrapper.clientWidth / 8;
   const plateMinWidth = wrapper.clientWidth / 40;
-  const plateHeight =  wrapper.clientHeight / 20;
+  const plateHeight = data.length <= 18? wrapper.clientHeight * 0.83 / 18 : wrapper.clientHeight * 0.83 / data.length;
   const towersPosX = [];
   let towersPosY;
   while (towerNums--) {
@@ -32,7 +32,7 @@ const renderPlate = (wrapper, data, state, towerNums, speed) => {
     .style('width', (_, index) => `${plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)}px`)
     .style('height', `${plateHeight}px`)
     .transition()
-    .duration(state === 'update' ? 500 : 0)
+    .duration(state === 'update' ? 500 / speed : 0)
     .style('transform', (plateData, index) => `translate(${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)) / 2}px, ${towersPosY - plateData.depth * plateHeight - plateHeight}px)`)
     // .duration(state === 'update' ? 250 : 0)
     // .style('left', (plateData, index) => `${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)) / 2}px`)
@@ -41,9 +41,9 @@ const renderPlate = (wrapper, data, state, towerNums, speed) => {
     // .style('top', plateData => ` ${towersPosY - plateData.depth * plateHeight - plateHeight}px`)
 }
 
-const Hanoi = ({ towerNums, data }) => {
+const Hanoi = ({ towerNums, data, speed }) => {
   const wrapper = useRef(null);
-  const handleResize = () => renderPlate(wrapper.current, data, 'resize', towerNums);
+  const handleResize = () => renderPlate(wrapper.current, data, 'resize', towerNums, speed);
   useEffect(()=> {
     renderPlate(wrapper.current, data, 'enter', towerNums);
     renderPlate(wrapper.current, data, 'update', towerNums);
