@@ -83,10 +83,64 @@ function deepClone(data) {
 		    return o;
 		  }else if( t === 'object') {
 		    for( i in data) {
-		      o[i] = deepClone(data[i]);
+		      	o[i] = deepClone(data[i]);
 		    }
 		    return o;
 		  }
 }
 
-initData(5);
+function deleteOtherData(){
+		for (let i = 0; i < step.length; i++)
+			for (let j = 0; j < data.length; j++) {
+				delete step[i][j].index;
+				delete step[i][j].next;
+		}
+}
+
+function getDataIndex(data)
+{
+		for (let i = 0; i < step.length; i++) {
+			if(step[i] === data)
+				return i;
+		}
+}
+
+function getPreData(data)
+{
+		var i;
+		i = getDataIndex(data);
+		if(i === 0)
+			return false;
+		i--;
+		return step[i];
+}
+
+function getNextData(data)
+{
+		var i;
+		i = getDataIndex(data);
+		if(i === step.length)
+			return false;
+		i++;
+		return step[i];
+}
+
+function sleep(delay) {
+		  var start = (new Date()).getTime();
+		  while ((new Date()).getTime() - start < delay) {
+		    continue;
+  }
+}
+
+function playAllData(data)
+{
+		let index = getDataIndex(data);
+		while(index < step.length)
+		{
+			sleep(1000);
+			getNextData(step[index]);
+			index++;
+		}
+
+}
+
