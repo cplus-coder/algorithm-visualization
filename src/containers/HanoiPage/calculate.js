@@ -1,33 +1,30 @@
-var data = new Array();
+//import {setData} from './index.jsx'
+var data = [];
 var pillarIndex = [ null, null, null, null ];
-var step = new Array();
-function initData(num) {
-		let n = num;
-		pillarIndex[0] = num-1;
-		while(num--)
+var step = [];
+function initData(_data) {
+		pillarIndex[0] = _data.length-1;
+		data = deepClone(_data);
+		for(let i = 0; i < _data.length; i++)
 		{
-			data.unshift({
-				index:num,
-				pillar: 0,
-				depth: num,
-				next: num-1
-			});
+			data[i].index = i;
+			data[i].next = i-1;
 		}
 		data[0].next = null;
-		let dataArr = new Array();
+		let dataArr = [];
 		dataArr = deepClone(data);
 		step.push(dataArr);
-		hanoi4(n,0,1,2,3);
+		hanoi4(_data.length,0,1,2,3);
 		console.log(step);
 }
 
 function hanoi4(n, a, b, c, d) {
 		let i,r, k;
-		if(n==0) return ;
-		else if(n == 1){
+		if(n===0) return ;
+		else if(n === 1){
 			movie(a,d);
 		}
-		else if( n == 2)
+		else if( n === 2)
 	    {
 	        movie(a,b);
 	        movie(a,d);
@@ -52,7 +49,7 @@ function hanoi3(n, a, b, c) {
 }
 
 function movie(a,b) {
-		let dataArr = new Array();
+		let dataArr = [];
 		let from = pillarIndex[a];
 		let to = pillarIndex[b];
 		data[from].pillar = b;
@@ -89,9 +86,31 @@ function deepClone(data) {
 		  }
 }
 
+function count(o){
+
+		var t = typeof o;
+
+		if(t === 'string'){
+		return o.length;
+
+		}else if(t === 'object'){
+
+		var n = 0;
+		for(var i in o){
+
+		n++;
+
+		}
+
+		return n;
+		}
+		return false;
+
+}
+
 function deleteOtherData(){
 		for (let i = 0; i < step.length; i++)
-			for (let j = 0; j < data.length; j++) {
+			for (let j = 0; j < count(data); j++) {
 				delete step[i][j].index;
 				delete step[i][j].next;
 		}
@@ -105,7 +124,7 @@ function getDataIndex(data)
 		}
 }
 
-function getPreData(data)
+export function getPreData(data)
 {
 		var i;
 		i = getDataIndex(data);
@@ -115,7 +134,7 @@ function getPreData(data)
 		return step[i];
 }
 
-function getNextData(data)
+export function getNextData(data)
 {
 		var i;
 		i = getDataIndex(data);
@@ -132,15 +151,17 @@ function sleep(delay) {
   }
 }
 
-function playAllData(data)
+export function playAllData(setData,data)
 {
+		initData(data);
+		deleteOtherData();
 		let index = getDataIndex(data);
 		while(index < step.length)
 		{
 			sleep(1000);
-			getNextData(step[index]);
+			console.log(getNextData(step[index]));
+			setData(getNextData(step[index]));
 			index++;
 		}
-
 }
 

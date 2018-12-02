@@ -34,7 +34,7 @@ const HanoiPage = () => {
       <div className={styles.panel} >
         <div className={styles.panelArea}>
           <span className={styles.panelTitle}>参数设置</span>
-          <div className={styles.panelInput}>R值: <InputNumber className={styles.input} min={1} max={100} value={0} /></div>
+          <div className={styles.panelInput}>R值: <InputNumber className={styles.input} min={1} max={100} value={0}/></div>
           <div className={styles.panelInput}>盘子数量: <InputNumber className={styles.input} min={1} max={64} value={data.length} onChange={value => setData(initNewData(value))}/></div>
           <div className={styles.panelInput}>动画速度: <Slider className={styles.slider} min={1} max={20} value={speed} onChange={value => setSpeed(value)}/></div>
         </div>
@@ -50,7 +50,7 @@ const HanoiPage = () => {
             <Button className={styles.button} icon="step-forward"  size="large" type="primary" onClick={() => setData(getNextData(data))}>下一步</Button>
           </div>
           <div className={`${styles.ButtonGroup} ${styles.special}`}>
-            <Button className={styles.button} icon="fast-forward"  size="large" type="primary" onClick={() => playAllData(setData)}>播放</Button>
+            <Button className={styles.button} icon="fast-forward"  size="large" type="primary" onClick={() => playAllData(setData,data)}>播放</Button>
             <Button className={styles.button} icon="pause"  size="large" type="primary" onClick={() => console.log('111')}>暂停</Button>
           </div>
         </div>
