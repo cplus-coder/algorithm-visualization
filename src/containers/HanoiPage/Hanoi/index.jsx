@@ -32,7 +32,7 @@ const renderPlate = (wrapper, data, state, towerNums, speed) => {
     .style('width', (_, index) => `${plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)}px`)
     .style('height', `${plateHeight}px`)
     .transition()
-    .duration(state === 'update' ? 500 / speed : 0)
+    .duration(state === 'update' ? 500 / speed: 0)
     .style('transform', (plateData, index) => `translate(${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)) / 2}px, ${towersPosY - plateData.depth * plateHeight - plateHeight}px)`)
     // .duration(state === 'update' ? 250 : 0)
     // .style('left', (plateData, index) => `${towersPosX[plateData.pillar] - (plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)) / 2}px`)
@@ -45,9 +45,9 @@ const Hanoi = ({ towerNums, data, speed }) => {
   const wrapper = useRef(null);
   const handleResize = () => renderPlate(wrapper.current, data, 'resize', towerNums, speed);
   useEffect(()=> {
-    renderPlate(wrapper.current, data, 'enter', towerNums);
-    renderPlate(wrapper.current, data, 'update', towerNums);
-    renderPlate(wrapper.current, data, 'exit', towerNums);
+    renderPlate(wrapper.current, data, 'enter', towerNums, speed);
+    renderPlate(wrapper.current, data, 'update', towerNums, speed);
+    renderPlate(wrapper.current, data, 'exit', towerNums, speed);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   });

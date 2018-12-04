@@ -178,18 +178,18 @@ function objectToArray(obj)
 	return array;
 }
 
-export function playAllData(setData,data)
+export function playAllData(setData, data)
 {
 		initData(data);
 		deleteOtherData();
 		let index = getDataIndex(data);
-		console.log(index);
-		while(index < step.length-1)
-		{
-			sleep(1000);
-			console.log(getNextData(step[index]));
-			setData(getNextData(step[index]));
-			index++;
-		}
+		const timer = setInterval(() => {
+			setData(getNextData(step[index++]));
+			if (index === step.length - 1) clearInterval(timer);
+		}, 400);
 }
+
+export function getNewInitData(data) {
+	console.log(data);
+};
 
