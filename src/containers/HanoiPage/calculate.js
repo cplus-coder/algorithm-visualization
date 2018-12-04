@@ -86,7 +86,7 @@ function deepClone(data) {
 		  }
 }
 
-function count(o){
+/*function count(o){
 
 		var t = typeof o;
 
@@ -96,7 +96,7 @@ function count(o){
 		}else if(t === 'object'){
 
 		var n = 0;
-		for(var i in o){
+		for(const i in o){
 
 		n++;
 
@@ -107,10 +107,12 @@ function count(o){
 		return false;
 
 }
-
+*/
 function deleteOtherData(){
+	let arr = Object.keys(data);
+	let length = arr.length;
 		for (let i = 0; i < step.length; i++)
-			for (let j = 0; j < count(data); j++) {
+			for (let j = 0; j < length; j++) {
 				delete step[i][j].index;
 				delete step[i][j].next;
 		}
@@ -119,30 +121,44 @@ function deleteOtherData(){
 function getDataIndex(data)
 {
 		for (let i = 0; i < step.length; i++) {
-			if(step[i] === data)
-				return i;
+			var n = 0;
+			for(let j = 0; j < data.length; j++)
+			{
+				if(step[i][j].pillar === data[j].pillar && step[i][j].depth === data[j].depth)
+					n++;
+				if(n === data.length)
+					return i;
+			}
 		}
+}
+
+function getArrIndex(data)
+{
+	for(let i = 0; i < step.length; i++)
+		if(data === step[i])
+			return i;
 }
 
 export function getPreData(data)
 {
 		var i;
-		i = getDataIndex(data);
+		i = getArrIndex(data);
 		if(i === 0)
 			return false;
 		i--;
-		return step[i];
+		return objectToArray(step[i]);
 }
 
 export function getNextData(data)
 {
 		var i;
-		i = getDataIndex(data);
-		if(i === step.length)
+		i = getArrIndex(data);
+		if(i === step.length-1)
 			return false;
 		i++;
-		return step[i];
+		return objectToArray(step[i]);
 }
+
 
 function sleep(delay) {
 		  var start = (new Date()).getTime();
@@ -151,12 +167,24 @@ function sleep(delay) {
   }
 }
 
+function objectToArray(obj)
+{
+	let arr = Object.keys(obj);
+	let array = [];
+	for(let i = 0; i < arr.length; i++)
+	{
+		array.push({pillar:obj[i].pillar,depth:obj[i].depth});
+	}
+	return array;
+}
+
 export function playAllData(setData,data)
 {
 		initData(data);
 		deleteOtherData();
 		let index = getDataIndex(data);
-		while(index < step.length)
+		console.log(index);
+		while(index < step.length-1)
 		{
 			sleep(1000);
 			console.log(getNextData(step[index]));
