@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, InputNumber, Slider } from 'antd';
 import Hanoi from './Hanoi';
 import styles from './index.less';
-import { getNextData, getPreData, playAllData, getNewInitData } from './calculate'
+import { getNextData, getPreData, playAllData, getNewInitData, getSpeed } from './calculate'
 
 const initData = [
   {
@@ -29,7 +29,6 @@ const initNewData = (dataLength) => {
 const HanoiPage = () => {
   const [data, setData] = useState(initData);
   const [speed, setSpeed] = useState(1);
-  // console.log(data)
   return (
     <div className={styles.wrapper}>
       <Hanoi data={data} speed={speed} towerNums={4} />
@@ -38,7 +37,7 @@ const HanoiPage = () => {
           <span className={styles.panelTitle}>参数设置</span>
           <div className={styles.panelInput}>R值: <InputNumber className={styles.input} min={1} max={100} value={0}/></div>
           <div className={styles.panelInput}>盘子数量: <InputNumber className={styles.input} min={1} max={64} value={data.length} onChange={value => setData(initNewData(value))}/></div>
-          <div className={styles.panelInput}>动画速度: <Slider className={styles.slider} min={1} max={50} value={speed} onChange={value => setSpeed(value)}/></div>
+          <div className={styles.panelInput}>动画速度: <Slider className={styles.slider} min={1} max={25} value={speed} onChange={value => { setSpeed(value); getSpeed(500 / value); }}/></div>
         </div>
         <div className={styles.panelArea}>
           <span className={styles.panelTitle}>数据统计</span>
