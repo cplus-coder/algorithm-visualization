@@ -15,6 +15,12 @@ const renderTower = (towerNums) => {
 }
 
 const renderPlate = (wrapper, data, state, towerNums, speed) => {
+  let plates = d3.select(wrapper).select(`.${styles.platesWrapper}`).selectAll('div').data(data);
+  plates = state === "enter" ? plates.enter().append('div') : state === "exit" ? plates.exit() : plates;
+  if (state === 'exit') {
+    plates.remove();
+    return;
+  }
   const plateMaxWidth =  wrapper.clientWidth / 8;
   const plateMinWidth = wrapper.clientWidth / 40;
   const plateHeight = data.length <= 18? wrapper.clientHeight * 0.83 / 18 : wrapper.clientHeight * 0.83 / data.length;
@@ -25,8 +31,6 @@ const renderPlate = (wrapper, data, state, towerNums, speed) => {
     towersPosX.push(targetTower.offsetLeft + targetTower.clientWidth / 2);
     towersPosY = targetTower.offsetTop;
   };
-  let plates = d3.select(wrapper).select(`.${styles.platesWrapper}`).selectAll('div').data(data);
-  plates = state === "enter" ? plates.enter().append('div') : state === "exit" ? plates.exit() : plates;
   plates
     .attr('class', styles.plate)
     .style('width', (_, index) => `${plateMaxWidth - (plateMaxWidth - plateMinWidth) * (index / data.length)}px`)

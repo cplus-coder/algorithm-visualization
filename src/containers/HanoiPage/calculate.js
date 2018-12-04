@@ -1,4 +1,6 @@
 //import {setData} from './index.jsx'
+var speed = 500 / 1;
+var timer = null;
 var data = [];
 var pillarIndex = [ null, null, null, null ];
 var step = [];
@@ -180,16 +182,27 @@ function objectToArray(obj)
 
 export function playAllData(setData, data)
 {
-		initData(data);
-		deleteOtherData();
-		let index = getDataIndex(data);
-		const timer = setInterval(() => {
-			setData(getNextData(step[index++]));
-			if (index === step.length - 1) clearInterval(timer);
-		}, 400);
+	initData(data);
+	deleteOtherData();
+	let index = getDataIndex(data);
+	const playAnimation = () => {
+		clearTimeout(timer);
+		setData(getNextData(step[index++]));
+		if (index === step.length - 1) return;
+		setTimeout(playAnimation, speed);
+	}
+	playAnimation();
+	// const timer = setInterval(() => {
+	// 	setData(getNextData(step[index++]));
+	// 	if (index === step.length - 1) clearInterval(timer);
+	// }, speed);
 }
 
 export function getNewInitData(data) {
 	console.log(data);
+};
+
+export function getSpeed(changedSpeed) {
+	speed = changedSpeed;
 };
 
