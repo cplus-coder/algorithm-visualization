@@ -47,8 +47,8 @@ const HanoiPage = () => {
         <div className={styles.panelArea}>
           <span className={styles.panelTitle}>游戏控制</span>
           <div className={styles.ButtonGroup}>
-            <Button className={styles.button} icon="step-backward" size="large" type="primary" onClick={() => setData(getPreData(data))}>上一步</Button>
-            <Button className={styles.button} icon="step-forward"  size="large" type="primary" onClick={() => setData(getNextData(data))}>下一步</Button>
+            <Button className={styles.button} icon="step-backward" size="large" type="primary" onClick={() => getPreData(setData,data)}>上一步</Button>
+            <Button className={styles.button} icon="step-forward"  size="large" type="primary" onClick={() => getNextData(setData,data)}>下一步</Button>
           </div>
           <div className={`${styles.ButtonGroup} ${styles.special}`}>
             <Button className={styles.button} icon="fast-forward"  size="large" type="primary" onClick={() => playAllData(setData, data)}>播放</Button>

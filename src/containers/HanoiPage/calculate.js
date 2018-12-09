@@ -5,6 +5,11 @@ var data = [];
 var pillarIndex = [ null, null, null, null ];
 var step = [];
 function initData(_data) {
+		data.length = 0;
+		pillarIndex = [ null, null, null, null ];
+		step.length = 0;
+		console.log(data);
+		console.log(step);
 		pillarIndex[0] = _data.length-1;
 		data = deepClone(_data);
 		for(let i = 0; i < _data.length; i++)
@@ -88,28 +93,6 @@ function deepClone(data) {
 		  }
 }
 
-/*function count(o){
-
-		var t = typeof o;
-
-		if(t === 'string'){
-		return o.length;
-
-		}else if(t === 'object'){
-
-		var n = 0;
-		for(const i in o){
-
-		n++;
-
-		}
-
-		return n;
-		}
-		return false;
-
-}
-*/
 function deleteOtherData(){
 	let arr = Object.keys(data);
 	let length = arr.length;
@@ -141,7 +124,40 @@ function getArrIndex(data)
 			return i;
 }
 
-export function getPreData(data)
+export function getPreData(setData,data)
+{
+		let index = getDataIndex(data);
+		if(index === 0)
+		{
+			alert('当前为第一步，没有上一步操作！');
+			return;
+		}
+		setData(objectToArray(step[--index]));
+}
+
+export function getNextData(setData,data)
+{
+		let index = getDataIndex(data);
+		if(index === step.length-1)
+		{
+			alert('当前为最后步，没有下一步操作！');
+			return;
+		}
+		setData(objectToArray(step[++index]));
+}
+/*
+function getNextStepData(data)
+{
+		var i;
+		i = getArrIndex(data);
+		if(i === step.length-1)
+			return false;
+		i++;
+		console.log(objectToArray(step[i]));
+		return objectToArray(step[i]);
+}
+
+function getPreStepData(data)
 {
 		var i;
 		i = getArrIndex(data);
@@ -150,24 +166,7 @@ export function getPreData(data)
 		i--;
 		return objectToArray(step[i]);
 }
-
-export function getNextData(data)
-{
-		var i;
-		i = getArrIndex(data);
-		if(i === step.length-1)
-			return false;
-		i++;
-		return objectToArray(step[i]);
-}
-
-
-function sleep(delay) {
-		  var start = (new Date()).getTime();
-		  while ((new Date()).getTime() - start < delay) {
-		    continue;
-  }
-}
+*/
 
 function objectToArray(obj)
 {
@@ -187,8 +186,8 @@ export function playAllData(setData, data)
 	let index = getDataIndex(data);
 	const playAnimation = () => {
 		clearTimeout(timer);
-		setData(getNextData(step[index++]));
-		if (index === step.length - 1) return;
+		setData(objectToArray(step[index++]));
+		if (index === step.length) return;
 		setTimeout(playAnimation, speed);
 	}
 	playAnimation();
@@ -200,6 +199,8 @@ export function playAllData(setData, data)
 
 export function getNewInitData(data) {
 	console.log(data);
+	initData(data);
+	deleteOtherData();
 };
 
 export function getSpeed(changedSpeed) {
