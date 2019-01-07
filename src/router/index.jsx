@@ -13,6 +13,7 @@ class AppRouter extends Component {
                         <li><Link to="/" replace={true}>welcome!</Link></li>
                         <li><Link to="/hanoi" >hanoi</Link></li>
                     </ul>
+                    <h1 className={styles.contain}>汉诺塔演示程序</h1>
                     <Route exact path="/" component={WelComePage}/>
                     <Route exact path="/hanoi" component={HanoiPage}/>
                 </div>

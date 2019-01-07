@@ -1,28 +1,66 @@
-//import {setData} from './index.jsx'
 var speed = 500 / 1;
 var timer = null;
 var data = [];
 var pillarIndex = [ null, null, null, null ];
 var step = [];
+var banPlayValue = false;
+export var rValue;
+var r1 = 0;
+var towerNums = 3;
+export var NowStep;
+export var AllstepNum;
 function initData(_data) {
 		data.length = 0;
 		pillarIndex = [ null, null, null, null ];
 		step.length = 0;
+		NowStep = 0;
 		console.log(data);
 		console.log(step);
 		pillarIndex[0] = _data.length-1;
-		data = deepClone(_data);
+		//data = deepClone(_data);
 		for(let i = 0; i < _data.length; i++)
-		{
+		/*{
 			data[i].index = i;
 			data[i].next = i-1;
-		}
+			data[i].pillar = 0;
+			data[i].depth = i;
+		}*/
+		data.push({ pillar: 0, depth: i, index: i, next: i-1});
 		data[0].next = null;
 		let dataArr = [];
 		dataArr = deepClone(data);
 		step.push(dataArr);
-		hanoi4(_data.length,0,1,2,3);
+		switch(towerNums){
+			case 3:
+				hanoi3(_data.length,0,1,2);
+				rValue = null;
+				break;
+			case 4:
+				if(r1)	hanoi5(_data.length, r1, 0, 1, 2, 3);
+				else hanoi4(_data.length,0,1,2,3);
+				break;
+			default:
+				break;
+
+		}
 		console.log(step);
+}
+
+function hanoi5(n, r, a, b, c, d){
+	console.log(r);
+		if(n==1)
+	        movie(a,d);
+	    else if( n == 2)
+	    {
+	        movie(a,b);
+	        movie(a,d);
+	        movie(b,d);
+		}
+		else{
+		hanoi4(r, a, c, d, b);
+		hanoi3(n-r, a, c, d);
+		hanoi4(r, b, a, c, d);
+		}
 }
 
 function hanoi4(n, a, b, c, d) {
@@ -45,6 +83,7 @@ function hanoi4(n, a, b, c, d) {
 			hanoi4(n-r, b, a, c, d);
 			
 		}
+		if(r1==0)	rValue = r;
 }
 
 function hanoi3(n, a, b, c) {
@@ -126,24 +165,24 @@ function getArrIndex(data)
 
 export function getPreData(setData,data)
 {
-		let index = getDataIndex(data);
-		if(index === 0)
+		NowStep = getDataIndex(data);
+		if(NowStep === 0)
 		{
 			alert('当前为第一步，没有上一步操作！');
 			return;
 		}
-		setData(objectToArray(step[--index]));
+		setData(objectToArray(step[--NowStep]));
 }
 
 export function getNextData(setData,data)
 {
-		let index = getDataIndex(data);
-		if(index === step.length-1)
+		NowStep = getDataIndex(data);
+		if(NowStep === step.length-1)
 		{
 			alert('当前为最后步，没有下一步操作！');
 			return;
 		}
-		setData(objectToArray(step[++index]));
+		setData(objectToArray(step[++NowStep]));
 }
 /*
 function getNextStepData(data)
@@ -181,13 +220,20 @@ function objectToArray(obj)
 
 export function playAllData(setData, data)
 {
-	initData(data);
-	deleteOtherData();
-	let index = getDataIndex(data);
+	//initData(data);
+	//deleteOtherData();
+	banPlayValue = false;
+	NowStep = getDataIndex(data);
+	if(NowStep === step.length-1)
+	{
+		NowStep = 0;
+		setData(objectToArray(step[NowStep]));
+	}
 	const playAnimation = () => {
+		if(banPlayValue)	return;
 		clearTimeout(timer);
-		setData(objectToArray(step[index++]));
-		if (index === step.length) return;
+		setData(objectToArray(step[++NowStep]));
+		if (NowStep === step.length-1)	return;
 		setTimeout(playAnimation, speed);
 	}
 	playAnimation();
@@ -195,11 +241,14 @@ export function playAllData(setData, data)
 	// 	setData(getNextData(step[index++]));
 	// 	if (index === step.length - 1) clearInterval(timer);
 	// }, speed);
-}
+};
 
 export function getNewInitData(data) {
+	banPlay();
 	console.log(data);
 	initData(data);
+	AllstepNum = step.length;
+	r1 = 0;
 	deleteOtherData();
 };
 
@@ -207,3 +256,26 @@ export function getSpeed(changedSpeed) {
 	speed = changedSpeed;
 };
 
+export function banPlay()
+{
+	banPlayValue = true;
+}
+
+export function getTowerNums(setTowerNums, value, setData){
+	setTowerNums(value);
+	towerNums = parseInt(value);
+	r1 = 0;
+	var oldData = [];
+	oldData = deepClone(data);
+	getNewInitData(objectToArray(oldData));
+	setData(objectToArray(step[0]));
+}
+
+export function setRValue(setData,value)
+{
+	r1 = value;
+	var oldData = [];
+	oldData = deepClone(data);
+	getNewInitData(objectToArray(oldData));
+	setData(objectToArray(step[0]));
+}
